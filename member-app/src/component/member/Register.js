@@ -3,28 +3,32 @@ import axios from 'axios';
 
 export default class Register extends Component {
 
-  constructor(props){
-    super(props);
-    this.state = {
-      
-    }
-  }
-
   register(e){
     let user = {
-      name:document.registerForm.name,
-      username:document.registerForm.username,
-      password:document.registerForm.password,
-      address:document.registerForm.address,
-      phone:document.registerForm.phone,
-      telephone:document.registerForm.telephone,
-      email:document.registerForm.email
+      name:document.registerForm.name.value,
+      username:document.registerForm.username.value,
+      password:document.registerForm.password.value,
+      address:document.registerForm.address.value,
+      phone:document.registerForm.phone.value,
+      telephone:document.registerForm.telephone.value,
+      email:document.registerForm.email.value
     }
 
-    let add = axios.post('http://localhost:8080/member/register', user, {
-      headers:{
-        'Content-Type':'application/json'
-      }
+    //alert("password: " + user.password);
+
+    let add = axios({
+      url:'http://localhost:8080/member/register',
+      method:'post',
+      data:{
+        name:document.registerForm.name.value,
+        username:document.registerForm.username.value,
+        password:document.registerForm.password.value,
+        address:document.registerForm.address.value,
+        phone:document.registerForm.phone.value,
+        telephone:document.registerForm.telephone.value,
+        email:document.registerForm.email.value
+      },
+      headers:{'Content-Type':'application/json'}
     });
 
     add.then((response) => {
@@ -42,13 +46,15 @@ export default class Register extends Component {
           console.log('Error sending the request:', error.message);
       }
     });
+
+    e.preventDefault();
   }
 
   render() {
     return (
       <div>
         Register
-        <form name='registerForm' onSubmit={this.register.bind(this)}>
+        <form name='registerForm' onSubmit={this.register.bind(this)} method='post'>
           name:<input type='text' name='name' /><br/>
           username:<input type='text' name='username' /><br/>
           password:<input type='password' name='password' /><br/>

@@ -22,14 +22,14 @@ export default class Login extends Component {
       }
     })
     .then(response => {
-      alert(response.data);
+      //alert(response.data);
       this.props.argue(response.data);
     })
     .catch(error => {
       console.log('發生錯誤: ', error);
     });
     
-    alert(document.loginForm.username.value + "\n" + document.loginForm.password.value);
+    //alert(document.loginForm.username.value + "\n" + document.loginForm.password.value);
     
     e.preventDefault();
   }

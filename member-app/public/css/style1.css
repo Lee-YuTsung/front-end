@@ -1,0 +1,18 @@
+.header{
+    background-color: aqua;
+    height: 150px;
+    width: 70%;
+    margin-left: 15%;
+}
+.content{
+    background-color: azure;
+    height: 500px;
+    width: 70%;
+    margin-left: 15%;
+}
+.footer{
+    background-color: darkblue;
+    height: 200px;
+    width: 70%;
+    margin-left: 15%;
+}
