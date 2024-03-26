@@ -48,6 +48,7 @@ export default class Register extends Component {
     });
 
     e.preventDefault();
+    window.location.assign("http://localhost:3000");
   }
 
   render() {

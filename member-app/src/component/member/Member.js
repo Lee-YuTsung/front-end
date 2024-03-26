@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Login from './Login';
-import Update from './Update';
-import Register from './Register';
+import axios from 'axios';
+import Hander from '../Hander';
+import Footer from '../Footer';
 
 export default class Member extends Component {
 
@@ -10,26 +10,46 @@ export default class Member extends Component {
     this.state = {
       
     }
-    this.login = this.login.bind(this);
   }
 
 
-  login(user){
-    this.setState({
-      id:user.id,
-      name:user.name,
-      username:user.username,
-      password:user.password,
-      address:user.address,
-      phone:user.phone,
-      telephone:user.telephone,
-      email:user.email
-    },() =>{alert(this.state.username + "，歡迎登入")});
-  };
+  login(e){
 
+    let user = axios({
+      url:'http://localhost:8080/member/login',
+      method:'post',
+      params:{
+        username:document.loginForm.username.value, 
+        password:document.loginForm.password.value
+      }
+    })
+    .then(response => {
+      // alert(response.data !== "" ? response.data : "帳號密碼錯誤");
+      if(response.data !== ""){
+        this.setState(response.data, () =>{console.log(this.state);});
+        
+      }else{
+        alert("帳號密碼錯誤");
+      }
+      
+    })
+    .catch(error => {
+      console.log('發生錯誤: ', error);
+    });
+    
+    //alert(document.loginForm.username.value + "\n" + document.loginForm.password.value);
+    
+    e.preventDefault();
+    //window.location.assign("http://localhost:3000");
+  }
+
+  logout(){
+    this.setState(null);
+  }
 
   show(e){
-    alert(this.state.id + "\n" + 
+    alert(this.state + "\n" + 
+    this.state.id + "\n" + 
     this.state.name + "\n" + 
     this.state.username + "\n" + 
     this.state.password + "\n" + 
@@ -37,24 +57,50 @@ export default class Member extends Component {
     this.state.phone + "\n" + 
     this.state.telephone + "\n" + 
     this.state.email + "\n");
+    console.log(this.state);
   }
 
   render() {
     return (
-      <div>
-        <div className='container'>
-        <ul className='nav nav-tabs' id='myTab'>
-            <li className='nav-item'><a className='nav-link active' data-bs-toggle='tab' href='#tab1'>首頁</a></li>
-            <li className='nav-item'><a className='nav-link' data-bs-toggle='tab' href='#tab2'>登入</a></li>
-            <li className='nav-item'><a className='nav-link' data-bs-toggle='tab' href='#tab3'>註冊</a></li>
-        </ul>
+      <div className='container'>
+        <div className='hander'><Hander/></div>
+        <div className='content'>
+          <nav className='navbar navbar-expand-sm bg-dark navbar-dark'>
+            <a className='navbar-brand' href=''>index</a>
 
-        <div className='tab-content' id='myTabContent'>
-            <div className='tab-pane fade show active' id='tab1'><p>首頁</p></div>
-            <div className='tab-pane fade' id='tab2'><Login user={this.state} argue={this.login} /></div>
-            <div className='tab=pane fade' id='tab3'><Register/></div>
+            <div className='text-end'>
+              <button type='button' className='btn btn-outline-light me-2' data-bs-toggle='modal' data-bs-target='#myModal'>login</button>
+            </div>
+            
+          </nav>
+
+          <div className='modal' id='myModal'>
+            <div className='modal-dialog'>
+              <div className='modal-content'>
+              
+                <div className="modal-header">
+                  <h4 className="modal-title">login</h4>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div className="modal-body">
+                  <form name="loginForm" onSubmit={this.login.bind(this)} method='post'>
+                    username:<input type="text" name="username" /><br/>
+                    password:<input type="password" name="password" /><br/>
+                    <input  className="btn btn-danger" data-bs-dismiss="modal" type="submit" value="login" /><br/>
+                  </form>
+                </div>
+
+                {/* <div className="modal-footer">
+                  <button type="button" className="btn btn-danger" data-bs-dismiss="modal">關閉</button>
+                </div> */}
+              </div>
+            </div>
+          </div>
+
+          <button onClick={this.show.bind(this)}>show</button>
         </div>
-    </div>
+        <div className='footer'><Footer/></div>
       </div>
     )
   }
